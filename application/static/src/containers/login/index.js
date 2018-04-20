@@ -42,7 +42,7 @@ class Login extends React.Component {
     render() {
       return (
         <div>
-          <LogInForm 
+          <LogInForm
             onChange={this.onChange}
             onClick={this.onSubmit}/>
         </div>
@@ -50,7 +50,7 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => (console.log(state),{
+const mapStateToProps = state => ({
   credentials: state.credentials
 })
 

@@ -2,3 +2,7 @@
 # Packages
 
 node_modules/
+
+# Yarn files
+yarn-error.log
+yarn.lock
