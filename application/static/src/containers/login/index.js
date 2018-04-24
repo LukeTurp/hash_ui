@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { LogInForm } from './LogInForm'
-import login from '../../modules/forms'
+import { login } from '../../modules/forms'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -13,22 +13,17 @@ class Login extends React.Component {
           refresh_token: null,
           userInput: {}
         }
-    }
-
-    componentDidMount() {
-        axios.get('http://localhost:8000/').then(resp=>
-          console.log('Test connection with Flask server responded with: ',resp.data))
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit = event => {
-      axios.post('http://127.0.0.1:8000/api/v1/user/auth', this.state.userInput)
-        .then(resp=>{
-          console.log(resp)
-          this.setState({
-            access_token: resp.data.access_token,
-            refresh_token: resp.data.refresh_token
-          })
-        }, err=>console.error(err))
+      Promise.resolve(this.props.login(this.state.userInput))
+        .then(
+              setTimeout(()=>console.log(this.props)
+              //change location here
+              , 1500)
+
+        )
     }
 
     onChange = event => {
@@ -36,7 +31,13 @@ class Login extends React.Component {
       input[event.target.name] = event.target.value
       this.setState({
         userInput: input
-      }, ()=>console.log(this.state))
+      })
+    }
+
+//delete this call when not testing
+    componentDidMount() {
+        axios.get('http://localhost:8000/').then(resp=>
+          console.log('Test connection with Flask server responded with: ',resp.data))
     }
 
     render() {
@@ -51,7 +52,9 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  credentials: state.credentials
+  username: state.forms.username,
+  access_token: state.forms.access_token,
+  refresh_token: state.forms.refresh_token
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
